@@ -26,5 +26,41 @@ ai_human_detection_project/
 └── README.md
 
 ## to clone repo
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/KhalidAlamm/ai_human_detection_project.git
+   cd ai_human_detection_project
+2. Install dependencies:
+    pip install -r requirements.txt
 
+## Running webpage:
+    python -m streamlit run app.py
 
+## To re-train, run cells of notebook AIVSHUMANDETECTION.ipynb in order
+
+Dependencies
+Python 3.10+
+
+streamlit
+
+scikit-learn
+
+pandas
+
+numpy
+
+scipy
+
+joblib
+
+PyPDF2
+
+python-docx
+
+altair
+
+matplotlib
+
+seaborn
+
+instal via requirements.txt
