@@ -29,6 +29,7 @@ ai_human_detection_project/
    ```bash
    git clone https://github.com/KhalidAlamm/ai_human_detection_project.git
    cd ai_human_detection_project
+   
 2. Install dependencies:
     pip install -r requirements.txt
 
@@ -62,4 +63,4 @@ matplotlib
 
 seaborn
 
-instal via requirements.txt
+## instal via requirements.txt
