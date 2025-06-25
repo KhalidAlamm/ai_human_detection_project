@@ -19,8 +19,7 @@ ai_human_detection_project/
 │ ├── svm_pipeline.pkl
 │ └── tfidf_vectorizer.pkl
 ├── notebooks/
-│ ├── AIvsHumanTextDetection.ipynb
-│ 
+│ └── AIvsHumanTextDetection.ipynb
 ├── app.py
 ├── requirements.txt
 └── README.md

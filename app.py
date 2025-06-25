@@ -10,6 +10,7 @@ import pandas as pd
 import datetime
 import altair as alt
 
+## had to redefine these classes for them to be able to work on website.
 class CustomPreprocessor(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
@@ -28,7 +29,7 @@ class TextStats(BaseEstimator, TransformerMixin):
 
 st.set_page_config(page_title="AI vs Human Text Detection", layout="centered")
 st.title("AI vs Human Text Detector")
-
+## for different types of input.
 def extract_text_from_pdf(file):
     pdf=PyPDF2.PdfReader(file)
     return " ".join([page.extract_text() for page in pdf.pages if page.extract_text()])
@@ -37,6 +38,7 @@ def extract_text_from_docx(file):
     doc=docx.Document(file)
     return "\n".join([para.text for para in doc.paragraphs])
 
+## text cleaner to allow models to process.
 def clean_text(text):
     t=str(text).lower()
     t=re.sub(r"http\S+","", t)
@@ -45,17 +47,17 @@ def clean_text(text):
     return t
 
 @st.cache_data
-def load_vectorizer():
+def load_vectorizer(): ##load standalone tf-idf vectorizer for feature display.
     return joblib.load(os.path.join("models","tfidf_vectorizer.pkl"))
 
 @st.cache_data
-def load_pipeline(name):
+def load_pipeline(name): ## loads one of the full pipelines.
     return joblib.load(os.path.join("models",name))
 
 vectorizer=load_vectorizer()
 pipelines={"SVM":"svm_pipeline.pkl","Decision Tree":"decision_tree_pipeline.pkl","AdaBoost":"adaboost_pipeline.pkl"}
 selected_model=st.selectbox("Select a model:", list(pipelines.keys()))
-pipeline=load_pipeline(pipelines[selected_model])
+pipeline=load_pipeline(pipelines[selected_model]) ## loads selected pipeline
 
 uploaded_file=st.file_uploader("Upload PDF or Word document", type=["pdf","docx"])
 text_input=st.text_area("Or paste your text here:")
@@ -69,13 +71,16 @@ else:
     raw_text=text_input
 
 if raw_text and st.button("Classify"):
-    cleaned=clean_text(raw_text)
+    cleaned=clean_text(raw_text) #clean text to prepare for pipeline
     input_series=pd.Series([cleaned])
-    pred=pipeline.predict(input_series)[0]
-    conf=pipeline.predict_proba(input_series)[0].max()
+    pred=pipeline.predict(input_series)[0] #prediciton
+    conf=pipeline.predict_proba(input_series)[0].max() #condifence score
+
     st.subheader("Prediction")
     st.markdown(f"Predicted label: `{pred}`")
     st.markdown(f"Confidence score: `{conf:.2f}`")
+
+    #showing top tf-idf features
     vec=vectorizer.transform([cleaned])
     feature_names=vectorizer.get_feature_names_out()
     nz=vec.nonzero()[1]
@@ -83,6 +88,7 @@ if raw_text and st.button("Classify"):
     st.subheader("TF-IDF Features Detected")
     for w,s in top:
         st.write(f"- {w}: {s:.4f}")
+    # if decision tree, show feature importances.
     clf=pipeline.named_steps.get("clf")
     if hasattr(clf,"feature_importances_"):
         imp=clf.feature_importances_
@@ -92,6 +98,7 @@ if raw_text and st.button("Classify"):
         st.subheader("Top Contributing TF-IDF Words")
         for i in idx:
             st.write(f"- {feature_names[i]}: {tfidf_imp[i]:.4f}")
+    # report generation.
     ts=datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     report=f"""Prediction Report
 
@@ -113,6 +120,8 @@ Generated on: {ts}
     with open(fname,"rb") as f:
         st.download_button("Download report",f,file_name=fname)
 
+
+# below is the code to display model comparison information and roc curves.
 st.divider()
 st.subheader("Model Comparison")
 cmp_df=pd.read_csv(os.path.join("models","model_comparison.csv"))
