@@ -6,23 +6,24 @@ This repository contains a Streamlit-based web application and supporting machin
 
 ai_human_detection_project/
 ├── data/
-│ ├── AI_vs_huam_train_dataset.xlsx  # Training dataset
+│ ├── AI_vs_huam_train_dataset.xlsx
 │ └── Final_test_data.csv
 ├── models/
 │ ├── adaboost_model.pkl
 │ ├── adaboost_pipeline.pkl
 │ ├── decision_tree_model.pkl
 │ ├── decision_tree_pipeline.pkl
-│ ├── model_comparison.csv ## Comparison table of model metrics
-│ ├── roc_data.csv # ROC curve data points
+│ ├── model_comparison.csv
+│ ├── roc_data.csv
 │ ├── svm_model.pkl
 │ ├── svm_pipeline.pkl
-│ └── tfidf_vectorizer.pkl # Fitted TF-IDF vectorizer
+│ └── tfidf_vectorizer.pkl
 ├── notebooks/
-│ ├── AIvsHumanTextDetection.ipynb #Jupyter notebook
-├── app.py # StreamLit application
-├── README.md
-└── requirements.txt #package dependencies.
+│ ├── AIvsHumanTextDetection.ipynb
+│ 
+├── app.py
+├── requirements.txt
+└── README.md
 
 ## to clone repo
 
